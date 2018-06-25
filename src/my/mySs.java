@@ -3,10 +3,10 @@ package my;
 import com.iflytek.cloud.speech.*;
 
 /**
- * Created by zmd on 2018/6/21.
+ * Created by zmd on 2018/6/21.语音合成
  */
 public class mySs {
-    public static final String APPID = "5b28bef4";
+    public static final String APPID = "******";//讯飞ID
     public static String flag = "";
     public void speak(String massage) {
         SpeechUtility.createUtility("appid=" + APPID);
