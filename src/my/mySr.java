@@ -9,7 +9,7 @@ import java.io.IOException;
  * Created by zmd on 2018/6/20.
  */
 public class mySr {
-    public static final String APPID = "*******";//自己的讯飞ID
+    public static final String APPID = "5b28bef4";//自己的讯飞ID
 
     static mySr mySr;
 
