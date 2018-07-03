@@ -1,5 +1,6 @@
 package wx;
 
+import com.sun.net.httpserver.HttpServer;
 import org.restlet.data.Form;
 import org.restlet.representation.Representation;
 import org.restlet.resource.ClientResource;
@@ -11,7 +12,6 @@ import java.io.IOException;
  */
 public class wxclient {
     public static void main(String[] args) throws IOException {
-
         String url = "https://localhost:443/wx";
         ClientResource client = new ClientResource(url);
         //创建表单

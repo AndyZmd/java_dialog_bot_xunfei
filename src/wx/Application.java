@@ -12,7 +12,7 @@ public class Application extends org.restlet.Application {
 
     public static void main(String[] args) throws Exception {
         Component component = new Component();
-        component.getServers().add(Protocol.HTTPS, 443);
+        component.getServers().add(Protocol.HTTP,8080);
         component.getDefaultHost().attach(new Application(null));
         component.start();
     }

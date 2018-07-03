@@ -5,6 +5,7 @@ import java.io.*;
 import java.security.KeyStore;
 
 /**
+ * https服务器 舍弃
  * Created by zmd on 2018/6/29.
  */
 public class httpsServer {
