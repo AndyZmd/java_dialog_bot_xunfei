@@ -8,12 +8,10 @@ import org.dom4j.io.SAXReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 处理wx发送的消息
  * Created by zmd on 2018/7/2.
  */
 public class CheckUtil {
@@ -68,13 +66,24 @@ public class CheckUtil {
 
     public static final String token = "zmd";
     public static boolean checkSignature(String signatue,String timestamp,String nonce){
-        String[] arr ={token,timestamp,nonce};
-        Arrays.sort(arr);
-        StringBuffer sb = new StringBuffer();
-        for (String s : arr){
-            sb.append(s);
-        }
-        String sh1 = getSh1(sb.toString());
+        List<String> params = new ArrayList<String>();
+        params.add(token);
+        params.add(timestamp);
+        params.add(nonce);
+        Collections.sort(params, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
+//        String[] arr ={token,timestamp,nonce};
+//        Arrays.sort(arr);
+//        StringBuffer sb = new StringBuffer();
+//        for (String s : arr){
+//            sb.append(s);
+//        }
+//        String sh1 = getSh1(sb.toString());
+        String sh1 = getSh1(params.get(0) + params.get(1) + params.get(2));
         return sh1.equals(signatue) ;
     }
     public static String getSh1(String str){

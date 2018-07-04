@@ -1,16 +1,12 @@
 package wx;
 
-import org.restlet.Request;
+import org.json.JSONException;
 import org.restlet.data.Form;
-import org.restlet.data.Parameter;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
 import org.restlet.resource.ServerResource;
 import my.sendClient;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
 
@@ -19,18 +15,22 @@ import java.util.Map;
  */
 public class wxResource extends ServerResource {
     public static sendClient sendClient =null;
-
+    public static TextMessage TextMessage =null;
     public static sendClient getsc(){
         if(sendClient==null){
             sendClient = new sendClient();
         }
         return sendClient;
     }
-
+    public static TextMessage gettm(){
+        if(TextMessage==null){
+            TextMessage = new TextMessage();
+        }
+        return TextMessage;
+    }
     @Override
     protected Representation get() {
-        Request request = getRequest();
-        Form form = request.getResourceRef().getQueryAsForm();
+        Form form = getRequest().getResourceRef().getQueryAsForm();
         String signature = form.getFirstValue("signature");
         String timestamp = form.getFirstValue("timestamp");
         String nonce = form.getFirstValue("nonce");
@@ -45,6 +45,7 @@ public class wxResource extends ServerResource {
         try {
             String etext = entity.getText();
             String respMessage = null;
+            String content=null;
             // xml请求解析
             Map<String, String> requestMap = CheckUtil.xmlToMap(etext);
             // 发送方帐号（open_id）
@@ -53,21 +54,31 @@ public class wxResource extends ServerResource {
             String toUserName = requestMap.get("ToUserName");
             // 消息类型
             String msgType = requestMap.get("MsgType");
-            // 消息内容
-            String content = requestMap.get("Content");
-            // 文本消息
             //自动回复
-            TextMessage text = new TextMessage();
-            text.setContent("the text is" + content);
+            if(msgType.equals("text")){
+                // 消息内容
+                content = getsc().send(requestMap.get("Content"));//文本发送到后台机器人进行对话
+            }
+            else if(msgType.equals("voice")){//语音转换后的文本
+                String rm2 = requestMap.get("Recognition");
+                content = getsc().send(rm2.substring(0,rm2.length() - 1));//微信语音转换自带标点符号 此处要删去句尾的句号 (接语义识别接口则无需去除标点符号)
+            }
+            else {
+                content = "我不知道你在说什么";
+            }
+            TextMessage text = gettm();
+            text.setContent(content);//返回内容
             text.setToUserName(fromUserName);
             text.setFromUserName(toUserName);
             text.setCreateTime(new Date().getTime() + "");
-            text.setMsgType(msgType);
+            text.setMsgType("text");
             respMessage = CheckUtil.textMessageToXml(text);
             return new StringRepresentation(respMessage);
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
+        return new StringRepresentation("程序出错了！");
     }
 }
