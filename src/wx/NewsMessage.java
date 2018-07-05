@@ -13,15 +13,7 @@ public class NewsMessage {
     public String MsgType;
 
     public int ArticleCount;
-    public List<ArticleMessage> articleMessages;
-
-    public List<ArticleMessage> getArticleMessages() {
-        return articleMessages;
-    }
-
-    public void setArticleMessages(List<ArticleMessage> articleMessages) {
-        this.articleMessages = articleMessages;
-    }
+    public List<ArticleMessage> Articles;
 
     public String getToUserName() {
         return ToUserName;
@@ -63,4 +55,11 @@ public class NewsMessage {
         ArticleCount = articleCount;
     }
 
+    public List<ArticleMessage> getArticles() {
+        return Articles;
+    }
+
+    public void setArticles(List<ArticleMessage> articles) {
+        Articles = articles;
+    }
 }

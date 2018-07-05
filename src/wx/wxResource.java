@@ -60,13 +60,14 @@ public class wxResource extends ServerResource {
                 // 消息内容
                 //content = getsc().send(requestMap.get("Content"));//文本发送到后台机器人进行对话
                 if(requestMap.get("Content").equals("1")){
-                    respMessage = SetNews(fromUserName, toUserName);
-                    return new StringRepresentation(respMessage);
+
+                    return new StringRepresentation(SetNews(fromUserName, toUserName));
+
                 }
                 content = requestMap.get("Content");
             }
             else if(msgType.equals("voice")){//语音转换后的文本
-                content = requestMap.get("Content");
+                content = requestMap.get("Recognition");
                 //String rm2 = requestMap.get("Recognition");
                 //content = getsc().send(rm2.substring(0,rm2.length() - 1));//微信语音转换自带标点符号 此处要删去句尾的句号 (接语义识别接口则无需去除标点符号)
             }
@@ -91,7 +92,7 @@ public class wxResource extends ServerResource {
     /*
     处理图文
      */
-    public static String SetNews(String fromUserName,String toUserName){
+    public String SetNews(String fromUserName,String toUserName){
         NewsMessage getnm = new NewsMessage();
         ArticleMessage articleMessage =new ArticleMessage();
         getnm.setToUserName(fromUserName);
@@ -103,10 +104,11 @@ public class wxResource extends ServerResource {
         articleMessage.setPicUrl("https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=514845704,1272367430&fm=15&gp=0.jpg");
         articleMessage.setTitle("这是图文标题");
         articleMessage.setUrl("www.baidu.com");
-        List<ArticleMessage> list=new ArrayList<ArticleMessage>();
+        List<ArticleMessage> list=new ArrayList();
         list.add(articleMessage);
-        getnm.setArticleMessages(list);
+        getnm.setArticles(list);
         getnm.setArticleCount(list.size());
+        System.out.println(CheckUtil.newMessageToXml(getnm));
         return CheckUtil.newMessageToXml(getnm);
     }
 }
