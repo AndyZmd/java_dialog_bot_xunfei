@@ -1,16 +1,27 @@
 package wx;
 
+import java.util.List;
+
 /**
- * Created by zmd on 2018/7/3.
- * 文本信息类
+ * Created by zmd on 2018/7/5.
+ * 图文信息类
  */
-public class TextMessage {
+public class NewsMessage {
     public String ToUserName;
     public String FromUserName;
     public String CreateTime;
     public String MsgType;
-    public String Content;
-    public String MsgId;
+
+    public int ArticleCount;
+    public List<ArticleMessage> articleMessages;
+
+    public List<ArticleMessage> getArticleMessages() {
+        return articleMessages;
+    }
+
+    public void setArticleMessages(List<ArticleMessage> articleMessages) {
+        this.articleMessages = articleMessages;
+    }
 
     public String getToUserName() {
         return ToUserName;
@@ -44,19 +55,12 @@ public class TextMessage {
         MsgType = msgType;
     }
 
-    public String getContent() {
-        return Content;
+    public int getArticleCount() {
+        return ArticleCount;
     }
 
-    public void setContent(String content) {
-        Content = content;
+    public void setArticleCount(int articleCount) {
+        ArticleCount = articleCount;
     }
 
-    public String getMsgId() {
-        return MsgId;
-    }
-
-    public void setMsgId(String msgId) {
-        MsgId = msgId;
-    }
 }

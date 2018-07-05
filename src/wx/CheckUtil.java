@@ -137,13 +137,19 @@ public class CheckUtil {
     }
     /**
      * 文本消息对象转换成xml
-     *
-     * @param textMessage 文本消息对象
-     * @return xml
      */
     public static String textMessageToXml(TextMessage textMessage){
         XStream xstream = new XStream();
         xstream.alias("xml", textMessage.getClass());
         return xstream.toXML(textMessage);
+    }
+    /**
+     * 图文消息对象转换成xml
+     */
+    public static String newMessageToXml(NewsMessage newsMessage){
+        XStream xstream = new XStream();
+        xstream.alias("xml", newsMessage.getClass());
+        xstream.alias("item", new ArticleMessage().getClass());
+        return xstream.toXML(newsMessage);
     }
 }
