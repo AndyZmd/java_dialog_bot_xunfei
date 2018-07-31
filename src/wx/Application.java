@@ -24,6 +24,7 @@ public class Application extends org.restlet.Application {
         Router router = new Router(this.getContext());
         //绑定资源路径"wx"到对应的处理资源类(wxResource)
         router.attach("/wx", wxResource.class);
+        router.attach("/app", appResource.class);
         return router;
     }
 }
